@@ -90,13 +90,44 @@ tests/               pytest suite
 
 ## Setup
 
-Requires Python 3.11+.
+Requires Python 3.9+ (any version with PyTorch wheels available works - the
+dependencies below are floor-pinned rather than exact-pinned so pip can pick
+versions that match whatever Python you have).
+
+**macOS / Linux (bash/zsh):**
 
 ```bash
 python3 -m venv .venv
-source .venv/bin/activate        # Windows: .venv\Scripts\activate
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
+
+**Windows (PowerShell):**
+
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
+
+If PowerShell blocks the activation script with an execution-policy error,
+run this once in that PowerShell window and try activating again:
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
+```
+
+**Windows (cmd.exe):**
+
+```bat
+python -m venv .venv
+.venv\Scripts\activate.bat
+pip install -r requirements.txt
+```
+
+On Windows, `python` may not be on PATH if it was installed from the
+Microsoft Store or via `py`. If `python` isn't found, use the launcher
+instead: `py -m venv .venv`, then activate as above.
 
 Generate sample files and train both models (all synthetic, no external
 data or internet access required - this takes well under a minute on CPU):
