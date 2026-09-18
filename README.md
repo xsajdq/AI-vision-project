@@ -129,6 +129,34 @@ On Windows, `python` may not be on PATH if it was installed from the
 Microsoft Store or via `py`. If `python` isn't found, use the launcher
 instead: `py -m venv .venv`, then activate as above.
 
+### Troubleshooting (Windows)
+
+**"running scripts is disabled on this system" when activating the venv** -
+PowerShell's default execution policy blocks `Activate.ps1`. Fix it for the
+current window only (doesn't need admin rights, doesn't change anything
+system-wide):
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
+.venv\Scripts\Activate.ps1
+```
+
+You'll know it worked because the prompt gets a `(.venv)` prefix.
+
+**I ran `pip install` before fixing that, did it break anything?** - No. If
+the venv wasn't active, `pip install -r requirements.txt` just installed the
+packages into your regular (global) Python instead of the isolated venv.
+The app will still run fine with `python scripts/generate_data.py`, etc. -
+you're just not isolated from other Python projects on your machine. To
+switch to a real venv afterwards, fix the execution policy above, activate
+`.venv`, and re-run `pip install -r requirements.txt`.
+
+**`pip` can't find a matching version for `torch`** - this means the
+pinned floor version doesn't have a wheel for your Python version. Make
+sure you're on an up-to-date pip (`python -m pip install --upgrade pip`)
+and re-run `pip install -r requirements.txt`; pip will pick the newest
+compatible `torch`/`torchaudio` build for your Python/OS automatically.
+
 Generate sample files and train both models (all synthetic, no external
 data or internet access required - this takes well under a minute on CPU):
 
