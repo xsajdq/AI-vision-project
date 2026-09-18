@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+.DS_Store
+
+# Generated synthetic datasets and trained checkpoints are reproducible
+# via scripts/generate_data.py and scripts/train_*.py, so keep them out
+# of version control.
+data/samples/
+server/models_store/*.pt
+
+.vscode/
+.idea/

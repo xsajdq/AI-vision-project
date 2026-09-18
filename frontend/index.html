@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QualityScope AI</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <div class="bg-grid"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">QS</span>
+      <div class="brand-text">
+        <h1>QualityScope AI</h1>
+        <p>Visual &amp; acoustic quality control, running entirely on-device</p>
+      </div>
+    </div>
+    <div class="status" id="status-pill">
+      <span class="dot"></span>
+      <span id="status-text">Checking models&hellip;</span>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="card panel" data-kind="vision">
+      <div class="panel-header">
+        <h2>Visual inspection</h2>
+        <p>Autoencoder trained on defect-free surface images. Anomalies are highlighted directly on the reconstruction error.</p>
+      </div>
+
+      <div class="dropzone" id="vision-dropzone" tabindex="0">
+        <input type="file" id="vision-input" accept="image/*" hidden />
+        <div class="dropzone-icon">🖼️</div>
+        <p><strong>Drop an image</strong> or click to browse</p>
+        <span class="hint">PNG / JPG of a product surface</span>
+      </div>
+
+      <div class="samples" id="vision-samples">
+        <span class="samples-label">Try a sample:</span>
+        <div class="sample-buttons" id="vision-sample-buttons"></div>
+      </div>
+
+      <div class="result" id="vision-result" hidden>
+        <div class="result-visual">
+          <img id="vision-heatmap" alt="Defect heatmap" />
+        </div>
+        <div class="result-details">
+          <div class="verdict" id="vision-verdict"></div>
+          <canvas id="vision-gauge" width="220" height="130"></canvas>
+          <dl class="metrics">
+            <dt>Anomaly score</dt><dd id="vision-score"></dd>
+            <dt>Decision threshold</dt><dd id="vision-threshold"></dd>
+          </dl>
+        </div>
+      </div>
+
+      <div class="error" id="vision-error" hidden></div>
+      <div class="loading" id="vision-loading" hidden>Analyzing surface&hellip;</div>
+    </section>
+
+    <section class="card panel" data-kind="audio">
+      <div class="panel-header">
+        <h2>Acoustic inspection</h2>
+        <p>Autoencoder trained on steady machine hum. Deviations in the mel-spectrogram flag potential faults early.</p>
+      </div>
+
+      <div class="dropzone" id="audio-dropzone" tabindex="0">
+        <input type="file" id="audio-input" accept="audio/*" hidden />
+        <div class="dropzone-icon">🎧</div>
+        <p><strong>Drop an audio clip</strong> or click to browse</p>
+        <span class="hint">WAV recording of machine operation</span>
+      </div>
+
+      <div class="samples" id="audio-samples">
+        <span class="samples-label">Try a sample:</span>
+        <div class="sample-buttons" id="audio-sample-buttons"></div>
+      </div>
+
+      <div class="result" id="audio-result" hidden>
+        <div class="result-visual">
+          <img id="audio-spectrogram" alt="Spectrogram" />
+        </div>
+        <div class="result-details">
+          <div class="verdict" id="audio-verdict"></div>
+          <canvas id="audio-gauge" width="220" height="130"></canvas>
+          <dl class="metrics">
+            <dt>Anomaly score</dt><dd id="audio-score"></dd>
+            <dt>Decision threshold</dt><dd id="audio-threshold"></dd>
+          </dl>
+        </div>
+      </div>
+
+      <div class="error" id="audio-error" hidden></div>
+      <div class="loading" id="audio-loading" hidden>Analyzing audio&hellip;</div>
+    </section>
+
+    <section class="card history-card">
+      <div class="panel-header">
+        <h2>Inspection log</h2>
+        <p>Most recent checks from this session</p>
+      </div>
+      <table class="history-table">
+        <thead>
+          <tr><th>Type</th><th>File</th><th>Verdict</th><th>Score</th><th>Time</th></tr>
+        </thead>
+        <tbody id="history-body">
+          <tr class="empty-row"><td colspan="5">No inspections yet</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>All inference runs locally with PyTorch &mdash; no data leaves this machine.</p>
+  </footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
